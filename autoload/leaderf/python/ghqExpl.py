@@ -72,11 +72,14 @@ class GhqExplManager(Manager):
 
     def _createHelp(self):
         help = []
-        help.append('" <F1> : toggle this help')
-        help.append('" <F5> : refresh the cache')
-        help.append('" <CR>/<double-click>/o : edit repo')
+        help.append('" <CR>/<double-click>/o : execute command under cursor')
+        help.append('" x : open file under cursor in a horizontally split window')
+        help.append('" v : open file under cursor in a vertically split window')
+        help.append('" t : open file under cursor in a new tabpage')
         help.append('" i : switch to input mode')
         help.append('" q : quit')
+        help.append('" <F1> : toggle this help')
+        help.append('" <F5> : refresh the cache')
         help.append(
             '" ---------------------------------------------------------')
         return help

@@ -9,12 +9,15 @@ exec g:Lf_py "from ghqExpl import *"
 
 function! leaderf#Ghq#Maps()
     nmapclear <buffer>
-    nnoremap <buffer> <silent> <F1>          :exec g:Lf_py "ghqExplManager.toggleHelp()"<CR>
-    nnoremap <buffer> <silent> <F5>          :exec g:Lf_py "ghqExplManager.refresh()"<CR>
+    nnoremap <buffer> <silent> <CR>          :exec g:Lf_py "ghqExplManager.accept()"<CR>
     nnoremap <buffer> <silent> o             :exec g:Lf_py "ghqExplManager.accept()"<CR>
     nnoremap <buffer> <silent> <2-LeftMouse> :exec g:Lf_py "ghqExplManager.accept()"<CR>
+    nnoremap <buffer> <silent> x             :exec g:Lf_py "ghqExplManager.accept('h')"<CR>
+    nnoremap <buffer> <silent> v             :exec g:Lf_py "ghqExplManager.accept('v')"<CR>
+    nnoremap <buffer> <silent> t             :exec g:Lf_py "ghqExplManager.accept('t')"<CR>
     nnoremap <buffer> <silent> q             :exec g:Lf_py "ghqExplManager.quit()"<CR>
     nnoremap <buffer> <silent> i             :exec g:Lf_py "ghqExplManager.input()"<CR>
+    nnoremap <buffer> <silent> <F1>          :exec g:Lf_py "ghqExplManager.toggleHelp()"<CR>
 endfunction
 
 function! leaderf#Ghq#startExpl(win_pos, ...)
