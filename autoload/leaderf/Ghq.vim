@@ -24,3 +24,10 @@ function! leaderf#Ghq#startExpl(win_pos, ...)
     call leaderf#LfPy("ghqExplManager.startExplorer('".a:win_pos."')")
 endfunction
 
+
+function! leaderf#Ghq#register(name)
+exec g:Lf_py "<< EOF"
+from leaderf.anyExpl import anyHub
+anyHub.addPythonExtension(vim.eval("a:name"), ghqExplManager)
+EOF
+endfunction
