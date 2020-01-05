@@ -38,7 +38,10 @@ class GhqExplorer(Explorer):
         return self._content
 
     def getStlCategory(self):
-        return "ghq"
+        return "Ghq"
+
+    def getStlCurDir(self):
+        return escQuote(lfEncode(os.getcwd()))
 
 
 #*****************************************************
@@ -58,9 +61,11 @@ class GhqExplManager(Manager):
     def _acceptSelection(self, *args, **kwargs):
         if len(args) == 0:
             return
+        cmd = lfEval("g:Lf_GhqAcceptSelectionCmd")
+        if cmd == '':
+            cmd = 'lcd'
         repo = args[0]
-        lfCmd("lcd %s" % os.path.join(_root,repo))
-        lfCmd("edit %s" % os.path.join(_root,repo))
+        lfCmd(cmd + ' ' + os.path.join(_root, repo))
 
     def _getDigest(self, line, mode):
         if not line:
@@ -73,22 +78,12 @@ class GhqExplManager(Manager):
     def _createHelp(self):
         help = []
         help.append('" <CR>/<double-click>/o : execute command under cursor')
-        help.append('" x : open file under cursor in a horizontally split window')
-        help.append('" v : open file under cursor in a vertically split window')
-        help.append('" t : open file under cursor in a new tabpage')
         help.append('" i : switch to input mode')
         help.append('" q : quit')
         help.append('" <F1> : toggle this help')
         help.append('" <F5> : refresh the cache')
-        help.append(
-            '" ---------------------------------------------------------')
+        help.append('" ---------------------------------------------------------')
         return help
-
-    def _beforeExit(self):
-        super(GhqExplManager, self)._beforeExit()
-        for i in self._match_ids:
-            lfCmd("silent! call matchdelete(%d)" % i)
-        self._match_ids = []
 
 
 #*****************************************************

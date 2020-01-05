@@ -12,22 +12,23 @@ function! leaderf#Ghq#Maps()
     nnoremap <buffer> <silent> <CR>          :exec g:Lf_py "ghqExplManager.accept()"<CR>
     nnoremap <buffer> <silent> o             :exec g:Lf_py "ghqExplManager.accept()"<CR>
     nnoremap <buffer> <silent> <2-LeftMouse> :exec g:Lf_py "ghqExplManager.accept()"<CR>
-    nnoremap <buffer> <silent> x             :exec g:Lf_py "ghqExplManager.accept('h')"<CR>
-    nnoremap <buffer> <silent> v             :exec g:Lf_py "ghqExplManager.accept('v')"<CR>
-    nnoremap <buffer> <silent> t             :exec g:Lf_py "ghqExplManager.accept('t')"<CR>
     nnoremap <buffer> <silent> q             :exec g:Lf_py "ghqExplManager.quit()"<CR>
     nnoremap <buffer> <silent> i             :exec g:Lf_py "ghqExplManager.input()"<CR>
     nnoremap <buffer> <silent> <F1>          :exec g:Lf_py "ghqExplManager.toggleHelp()"<CR>
+
+    if has_key(g:Lf_NormalMap, "Ghq")
+        for i in g:Lf_NormalMap["Ghq"]
+            exec 'nnoremap <buffer> <silent> '.i[0].' '.i[1]
+        endfor
+    endif
 endfunction
 
-function! leaderf#Ghq#startExpl(win_pos, ...)
-    call leaderf#LfPy("ghqExplManager.startExplorer('".a:win_pos."')")
-endfunction
 
-
-function! leaderf#Ghq#register(name)
-exec g:Lf_py "<< EOF"
-from leaderf.anyExpl import anyHub
-anyHub.addPythonExtension(vim.eval("a:name"), ghqExplManager)
-EOF
+function! leaderf#Ghq#managerId()
+    " pyxeval() has bug
+    if g:Lf_PythonVersion == 2
+        return pyeval("id(ghqExplManager)")
+    else
+        return py3eval("id(ghqExplManager)")
+    endif
 endfunction

@@ -1,0 +1,29 @@
+*LeaderF-ghq*
+
+INTRODUCTION~
+
+This plugin is an extension of LeaderF, it is used to navigate the ghq repos.
+
+==============================================================================
+REQUIREMENTS~
+
+- vim7.4.330 or higher.
+- vim compiled with Python support, you can check by using `echo has('python')`
+  or `echo has('python3')` to see if the result is 1.
+==============================================================================
+OPTIONS~
+
+g:Lf_GhqAcceptSelectionCmd                      *g:Lf_GhqOpenCommand*
+    Command to execute when accepting selection.
+    default: 'lcd'
+
+
+==============================================================================
+USAGE~
+
+:LeaderfGhq                                     *LeaderfGhq*
+    Launch LeaderF to navigate the ghq repos.
+
+==============================================================================
+vim:tw=78:ts=4:ft=help:norl
+
