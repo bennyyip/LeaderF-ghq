@@ -21,27 +21,24 @@ _root = subprocess.run(
 #*****************************************************
 class GhqExplorer(Explorer):
     def __init__(self):
-        self._content = []
+        self._executor = []
 
     def getContent(self, *args, **kwargs):
-        if self._content:
-            return self._content
-        else:
-            return self.getFreshContent()
-
-    def getFreshContent(self, *args, **kwargs):
-        cmd = ['ghq', 'list']
-        self._content = subprocess.run(
-            cmd, check=True, universal_newlines=True,
-            stdout=subprocess.PIPE).stdout.split()
-
-        return self._content
+        cmd = 'ghq list'
+        executor = AsyncExecutor()
+        self._executor.append(executor)
+        return executor.execute(cmd, encoding=lfEval("&encoding"))
 
     def getStlCategory(self):
         return "Ghq"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(os.getcwd()))
+
+    def cleanup(self):
+        for exe in self._executor:
+            exe.killProcess()
+        self._executor = []
 
 
 #*****************************************************
