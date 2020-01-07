@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import vim
 import subprocess
+import os
 from leaderf.utils import *
 from leaderf.explorer import *
 from leaderf.manager import *
-
-import os
 
 _root = subprocess.run(
     ['ghq', 'root'],
@@ -21,24 +19,27 @@ _root = subprocess.run(
 #*****************************************************
 class GhqExplorer(Explorer):
     def __init__(self):
-        self._executor = []
+        self._content = []
 
     def getContent(self, *args, **kwargs):
-        cmd = 'ghq list'
-        executor = AsyncExecutor()
-        self._executor.append(executor)
-        return executor.execute(cmd, encoding=lfEval("&encoding"))
+        if self._content:
+            return self._content
+        else:
+            return self.getFreshContent()
+
+    def getFreshContent(self, *args, **kwargs):
+        cmd = ['ghq', 'list']
+        self._content = subprocess.run(
+            cmd, check=True, universal_newlines=True,
+            stdout=subprocess.PIPE).stdout.split()
+
+        return self._content
 
     def getStlCategory(self):
         return "Ghq"
 
     def getStlCurDir(self):
         return escQuote(lfEncode(os.getcwd()))
-
-    def cleanup(self):
-        for exe in self._executor:
-            exe.killProcess()
-        self._executor = []
 
 
 #*****************************************************
