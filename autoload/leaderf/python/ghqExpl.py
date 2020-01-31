@@ -1,17 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import subprocess
 import os
 from leaderf.utils import *
 from leaderf.explorer import *
 from leaderf.manager import *
 
-_root = subprocess.run(
-    ['ghq', 'root'],
-    check=True,
-    universal_newlines=True,
-    stdout=subprocess.PIPE).stdout.strip()
+_root = lfEval("system('ghq root')[:-2]")
 
 
 #*****************************************************
@@ -28,10 +23,7 @@ class GhqExplorer(Explorer):
             return self.getFreshContent()
 
     def getFreshContent(self, *args, **kwargs):
-        cmd = ['ghq', 'list']
-        self._content = subprocess.run(
-            cmd, check=True, universal_newlines=True,
-            stdout=subprocess.PIPE).stdout.split()
+        self._content = lfEval("system('ghq list')").split()
 
         return self._content
 
