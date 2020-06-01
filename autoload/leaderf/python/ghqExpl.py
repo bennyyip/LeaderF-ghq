@@ -9,9 +9,9 @@ from leaderf.manager import *
 _root = lfEval("system('ghq root')[:-2]")
 
 
-#*****************************************************
+# *****************************************************
 # GhqExplorer
-#*****************************************************
+# *****************************************************
 class GhqExplorer(Explorer):
     def __init__(self):
         self._content = []
@@ -27,14 +27,19 @@ class GhqExplorer(Explorer):
 
         # github.com/tamago324/LeaderF-ghq
         # <---------/-------------------->
-        contents = [r.split('/', 1) for r in repos]
+        contents = [r.split("/", 1) for r in repos]
 
-        max_repo_len = max(int(lfEval("strdisplaywidth('%s')" % escQuote(item[1]))) for item in contents)
+        max_repo_len = max(
+            int(lfEval("strdisplaywidth('%s')" % escQuote(item[1])))
+            for item in contents
+        )
 
         lines = []
 
         for service, repo in contents:
-            space_num = max_repo_len - int(lfEval("strdisplaywidth('%s')" % escQuote(repo)))
+            space_num = max_repo_len - int(
+                lfEval("strdisplaywidth('%s')" % escQuote(repo))
+            )
             lines.append('%s%s "%s"' % (repo, " " * space_num, service))
 
         self._content = lines
@@ -51,9 +56,9 @@ class GhqExplorer(Explorer):
         return True
 
 
-#*****************************************************
+# *****************************************************
 # GhqExplManager
-#*****************************************************
+# *****************************************************
 class GhqExplManager(Manager):
     def __init__(self):
         super(GhqExplManager, self).__init__()
@@ -69,11 +74,11 @@ class GhqExplManager(Manager):
         if len(args) == 0:
             return
         cmd = lfEval("g:Lf_GhqAcceptSelectionCmd")
-        if cmd == '':
-            cmd = 'lcd'
+        if cmd == "":
+            cmd = "lcd"
         repo = self._getDigest(args[0], 1)
         service = self._getDigest(args[0], 2)
-        lfCmd(cmd + ' ' + os.path.join(_root, os.path.join(service, repo)))
+        lfCmd(cmd + " " + os.path.join(_root, os.path.join(service, repo)))
 
     def _getDigest(self, line, mode):
         """
@@ -84,7 +89,7 @@ class GhqExplManager(Manager):
                   2, return the directory name
         """
         if not line:
-            return ''
+            return ""
         if mode == 0:
             return line
         elif mode == 1:
@@ -92,7 +97,7 @@ class GhqExplManager(Manager):
             return line[:start_pos].rstrip()
         else:
             start_pos = line.find(' "')
-            return line[start_pos+2:-1]
+            return line[start_pos + 2 : -1]
 
     def _getDigestStartPos(self, line, mode):
         """
@@ -107,7 +112,7 @@ class GhqExplManager(Manager):
 
         if mode == 2:
             start_pos = line.find(' "')
-            return lfBytesLen(line[:start_pos+2])
+            return lfBytesLen(line[: start_pos + 2])
         else:
             return 0
 
@@ -131,13 +136,13 @@ class GhqExplManager(Manager):
             id = int(lfEval("matchid"))
             self._match_ids.append(id)
         else:
-            id = int(lfEval("matchadd('Lf_hl_ghqServiceName', '\s\+\zs"".\+')"))
+            id = int(lfEval("matchadd('Lf_hl_ghqServiceName', '\s\+\zs" ".\+')"))
             self._match_ids.append(id)
 
 
-#*****************************************************
+# *****************************************************
 # ghqExplManager is a singleton
-#*****************************************************
+# *****************************************************
 ghqExplManager = GhqExplManager()
 
-__all__ = ['ghqExplManager']
+__all__ = ["ghqExplManager"]
